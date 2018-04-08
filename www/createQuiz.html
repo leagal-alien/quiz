@@ -1,29 +1,49 @@
 <ons-page id="create_quiz_page">
-    <div style="text-align: center">
-        <h1>クイズ登録画面</h1>
-        
-        <p>問題文
-            <input type="textarea" name="quiz_text" id="quiz_text"/>
-            <br/>
-            正解
-            <input type="text" name="answer" id="answer">
-            <br/>
-            選択肢1
-            <input type="text" name="option1" id="option1">
-            <br/>
-            選択肢2
-            <input type="text" name="option2" id="option2">
-            <br/>
-            選択肢3
-            <input type="text" name="option3" id="option3">
-            <br/>
-            選択肢4
-            <input type="text" name="option4" id="option3">
-            <br/>
-            <br/>
-            <span id="create_button_area"></span>
-            <br/>
-            <span id="created_message"></span>
-        </p>
+  <h1>クイズ登録画面</h1>
+  <div class="card">
+    <div class="card__title"><strong>問題文</strong></div>
+    <div class="card-body" id="question" style="word-break: break-all;">
+    <textarea name="quiz_text" id="quiz_text" style="width:100%;"></textarea>
     </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>選択肢1</strong></div>
+    <div class="card-body">
+    <textarea name="option1" id="option1" style="width:100%;"></textarea>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>選択肢2</strong></div>
+    <div class="card-body">
+    <textarea name="option2" id="option2" style="width:100%;"></textarea>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>選択肢3</strong></div>
+    <div class="card-body">
+    <textarea name="option3" id="option3" style="width:100%;"></textarea>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>選択肢4</strong></div>
+    <div class="card-body">
+    <textarea name="option4" id="option4" style="width:100%;"></textarea>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>正解設定 Index (0 ～ 3)</strong></div>
+    <div class="card-body">
+      <input type="number" name="answer" id="answer">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__title"><strong>解説</strong></div>
+    <div class="card-body">
+    <textarea name="commentary" id="commentary" style="width:100%;"></textarea>
+    </div>
+  </div>
+  <br/>
+  <span id="create_button_area"></span>
+  <br/>
+  <span id="created_message"></span>
 </ons-page>

@@ -131,10 +131,11 @@ function createQuiz(){
     var option2 = $("#option2").val();
     var option3 = $("#option3").val();
     var option4 = $("#option4").val();
+    var commentary = $("#commentary").val();
         
     //空の要素がないことを確認する
     if (quizText !== "" && answer !== "" &&
-        option1 !== "" && option2 !== "" && option3 !== "" && option4 !== ""){
+        option1 !== "" && option2 !== "" && option3 !== ""){
         //クイズクラスのインスタンスを作成する
         var QuizClass = ncmb.DataStore("Quiz");
         var quiz = new QuizClass();
@@ -142,7 +143,8 @@ function createQuiz(){
         //取得したクイズの内容をセットし、mobile backendにクイズを登録する
         quiz.set("quizText", quizText)
             .set("answer", answer)
-            .set("options", [option1, option2, option3])
+            .set("options", [option1, option2, option3, option4])
+            .set("commentary", commentary)
             .save()
             .then(function(object) {
                 $("#create_button_area").hide();
@@ -160,7 +162,9 @@ function createQuiz(){
 
 //クイズ画面をリフレッシュする
 function refreshQuiz(){
-    $("#answer_options").html("");    
+    $("#answer_options").html("");
+    // 解説を非表示にする
+    $("#commentary_area").css('visibility','hidden');    
     selectQuiz();
 }
 
@@ -171,16 +175,21 @@ var score = 0;
 function answerQuiz(selectedOptions){
     //選択肢を非表示にする
     $("#answer_options").hide();
-    
-    if (answerText === selectedOptions) {
+    //  console.log("answerIndex:" + answerIndex);  
+    //  console.log("selectedOptions:" + selectedOptions);  
+
+    if (answerIndex == selectedOptions) {
         //正解時に○画像を出す
         $("#question").append("<br/><img src='images/maru.png'><br/>" + (score+1) + "問連続正解中！");
+        
+        // 解説を表示する
+        $("#commentary_area").css('visibility','visible');
         
         //次の問題を開くボタンを表示する
         var btn = $("<ons-button onclick='refreshQuiz()'>次の問題</ons-button>");
         btn.appendTo($("#question"));
         ons.compile(btn[0]);
-        
+
         //連続正解数を更新する
         score++;
     } else {
@@ -200,7 +209,11 @@ function answerQuiz(selectedOptions){
                 //スコアの更新が完了したら、メニュー画面に遷移するボタンを表示させる
                 var btn = $("<ons-button onclick='quizNavi.resetToPage(\"menu.html\")'>メニューに戻る</ons-button>");
                 btn.appendTo($("#question"));
-                ons.compile(btn[0]);               
+                ons.compile(btn[0]);
+                //次の問題を開くボタンを表示する
+                var btn1 = $("<ons-button onclick='refreshQuiz()'>次の問題</ons-button>");
+                btn1.appendTo($("#question"));
+                ons.compile(btn1[0]);
             })
             .catch(function(error){
                 console.log("error:" + error.message);  
@@ -209,7 +222,7 @@ function answerQuiz(selectedOptions){
 }
 
 //mobile backendから取得したクイズの正解を保持する変数
-var answerText = null;
+var answerIndex = null;
 
 //クイズを表示するメソッド
 function displayQuiz(quiz){
@@ -221,23 +234,29 @@ function displayQuiz(quiz){
     
     //選択肢が入っている配列の末尾に正解を追加する
     var array = quiz.get("options");
-    array[3] = quiz.get("answer");
+    // array[3] = quiz.get("answer");
     
     //正解とダミーの選択肢をランダムに入れ替える
+/*
     var index = Math.floor(Math.random() * 3);
     var tmp = array[index];
     array[index] = array[3];
     array[3] = tmp;
-    
+*/
     //正解を含んだ選択肢の配列を表示する
-    for (var i = 0; i < 5; i++){
-        var btn = $("<ons-button onclick=\"answerQuiz('" + array[i] + "')\">" + array[i] + "</ons-button>");
+    for (var i = 0; i < 4; i++){
+        // var btn = $("<ons-button modifier=\"large\" onclick=\"answerQuiz('" + array[i] + "')\">" + array[i] + "</ons-button>");
+        // style=\"word-break: break-all;\" で折返しすると、onclick が効かなくなる。
+        //var btn = $("<ons-list-item onclick=\"answerQuiz('" + array[i] + "')\"><label style=\"word-break: break-all;\">" + array[i] + "</label></ons-button>");
+        var btn = $("<ons-list-item onclick=\"answerQuiz(" + i + ")\"><label style=\"word-break: break-all;\">" + array[i] + "</label></ons-button>");
         btn.appendTo($("#answer_options"));
         ons.compile(btn[0]);
     }
+    // 解説を配置　非表示
+    $("#commentary").val(quiz.get("commentary"));
     
     //選択肢がタッチされたときに正誤判定を行うため、正解を保持する
-    answerText = quiz.get("answer");
+    answerIndex = quiz.get("answer");
 }
 
 var quizSize = 0;

@@ -2,10 +2,18 @@
     <div style="text-align: center">
         <h1>問題</h1>
         
-        <p id="question"></p>
-        
-        <div id="answer_options">
+        <!-- <p id="question"></p> -->
+        <div class="card">
+          <div class="card-body" id="question" style="word-break: break-all;">
+          </div>
         </div>
         
+        <ons-list>
+        <div id="answer_options">
+        </div>
+        </ons-list>
+        <div id="commentary_area" style="visibility:hidden;">
+          <textarea id="commentary" class="textarea" rows="5" style="width:100%;" placeholder="解説がありません。" readonly></textarea>
+        </div>
     </div>
 </ons-page>
