@@ -180,15 +180,20 @@ function answerQuiz(selectedOptions){
 
     if (answerIndex == selectedOptions) {
         //正解時に○画像を出す
-        $("#question").append("<br/><img src='images/maru.png'><br/>" + (score+1) + "問連続正解中！");
-        
+        $("#question").append("<br/><img src='images/maru.png'><br/>" + (score+1) + "問連続正解中！<br/>");
+
         // 解説を表示する
         $("#commentary_area").css('visibility','visible');
-        
-        //次の問題を開くボタンを表示する
-        var btn = $("<ons-button onclick='refreshQuiz()'>次の問題</ons-button>");
+
+        //メニュー画面に遷移するボタンを表示させる
+        var btn = $("<ons-button onclick='quizNavi.resetToPage(\"menu.html\")'>メニューに戻る</ons-button>");
         btn.appendTo($("#question"));
         ons.compile(btn[0]);
+
+        //次の問題を開くボタンを表示する
+        var btn1 = $("<ons-button onclick='refreshQuiz()'>次の問題</ons-button>");
+        btn1.appendTo($("#question"));
+        ons.compile(btn1[0]);
 
         //連続正解数を更新する
         score++;
